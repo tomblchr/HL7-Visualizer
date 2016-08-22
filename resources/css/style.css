@@ -6,15 +6,29 @@
         Purpose of the stylesheet follows.
 */
 
-body { padding: 60px 0px 10px 0px; }
+body { 
+    padding: 60px 0px 10px 0px; 
+    line-height: normal;    
+}
 
 .tooltip.in {
     opacity: 0.9;
     filter: alpha(opacity=90);
 }
 
+#parsedHl7 {
+    color: #bbb; 
+    min-height: 300px; 
+    font-size: 12px; 
+    font-family: 'Droid Sans Mono', sans-serif; 
+    white-space: nowrap; 
+    text-wrap: avoid; 
+    overflow-x:auto; 
+    padding: 3px 0px 5px 2px;
+}
+
 #parsedHl7 .segment { 
-    margin-bottom: 7px; 
+    margin-bottom: 2px; 
     clear:both;
     margin-left: 30px;
 }
@@ -46,7 +60,7 @@ body { padding: 60px 0px 10px 0px; }
     font-size: 9px;
     line-height: 14px;
     color:#aaa;
-    padding: 0px 3px 0px 3px;
+    padding: 0px 2px 0px 2px;
     display:none; /* Not visiable by default */
     
 }

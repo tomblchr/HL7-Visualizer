@@ -103,7 +103,7 @@ function parseSeparators(defaultSeparators, message) {
 function splitMessage(separators, separatorIndex, content, container) {
     if (separatorIndex < 0 || separatorIndex > separators.length - 1) {
         if (content.trim().length == 0) {
-            container.html("&nbsp;");
+            container.html("&thinsp;");
         } else {
             container.text(content);
         }
