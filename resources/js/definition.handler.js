@@ -83,8 +83,10 @@ function attachDefinition(definition) {
             var $field = $($fields[fieldIndex]);
             var field = segment.fields[fieldIndex];
             if (field == null) {
-                console.warn("Defined field with index "+fieldIndex+" in "+segment.name+" was not found");
-                continue;
+                //console.warn("Defined field with index "+fieldIndex+" in "+segment.name+" was not found");
+                var fieldname = segment.name + "." + fieldIndex;
+                field = { name: fieldname };
+                //continue;
             }
             
             
@@ -113,7 +115,8 @@ function attachDefinition(definition) {
                 // Field always has at least one component even if not defined in definition
                 // Assign field description as component title
                 $(".component", $field).attr("title", field.name + " ["+ xmlPath.join(".") +"]");
-                continue;
+                field.components = [ { name: "" }];
+                //continue;
             }
             
             // Field has components defined
@@ -126,8 +129,9 @@ function attachDefinition(definition) {
                 var $component = $($components[componentIndex]);
                 var component = field.components[componentIndex];
                 if (component == null) {
-                    console.warn("Defined component with index "+componentIndex+" in "+segment.name+"."+ fieldIndex +" was not found");
-                    continue;
+                    //console.warn("Defined component with index "+componentIndex+" in "+segment.name+"."+ fieldIndex +" was not found");
+                    //continue;
+                    component = { name: "" };
                 }
 
                 // Add component index to the path
