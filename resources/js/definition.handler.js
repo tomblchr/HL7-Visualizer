@@ -1,7 +1,9 @@
 var HL7Dictionary = null;
+var HL7version = '2.5.1';
 
 function attachDefinitionByVersion(version, hl7dictionary) {
     HL7Dictionary = hl7dictionary;
+    HL7version = version;
 
     if (typeof(version) !== "undefined" && version.match(/\d\.\d/)) {
         console.log("HL7 Version: " + version);
@@ -10,6 +12,7 @@ function attachDefinitionByVersion(version, hl7dictionary) {
         version = "0.0"; // this should load default
     }
     
+    /*
     var loadedDefault = false;
     $.ajax({
         url: "resources/js/definition."+version+".json",
@@ -26,6 +29,8 @@ function attachDefinitionByVersion(version, hl7dictionary) {
         },
         success: attachDefinitionAndUi
     });
+    */
+    attachDefinitionAndUi();
 }
 
 function attachDefinitionAndUi(definition) {
@@ -317,7 +322,7 @@ function attachDefinitionFromDictionary()
 function findSegment(segment)
 {        
     var segmentName = segment.attr("data-name");
-    var result = HL7Dictionary.definitions['2.5.1'].segments[segmentName.toUpperCase()];
+    var result = HL7Dictionary.definitions[HL7version].segments[segmentName.toUpperCase()];
     if (result == null)
     {
         console.info("Unable to find segment " + segmentName);
@@ -328,7 +333,7 @@ function findSegment(segment)
 
 function findFieldByDataType(datatype)
 {
-    var result = HL7Dictionary.definitions['2.5.1'].fields[datatype];
+    var result = HL7Dictionary.definitions[HL7version].fields[datatype];
     if (result == null) {
         console.warn("Unable to find field by datatype " + datatype);
         return null;
