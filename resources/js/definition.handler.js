@@ -1,5 +1,8 @@
+var HL7Dictionary = null;
 
-function attachDefinitionByVersion(version) {
+function attachDefinitionByVersion(version, hl7dictionary) {
+    HL7Dictionary = hl7dictionary;
+
     if (typeof(version) !== "undefined" && version.match(/\d\.\d/)) {
         console.log("HL7 Version: " + version);
     } else {
@@ -26,7 +29,8 @@ function attachDefinitionByVersion(version) {
 }
 
 function attachDefinitionAndUi(definition) {
-    attachDefinition(definition);
+    //attachDefinition(definition);
+    attachDefinitionFromDictionary();
     attachUiEvents();
 }
 
@@ -87,8 +91,8 @@ function attachDefinition(definition) {
                 var fieldname = segment.name + "." + fieldIndex;
                 field = { name: fieldname };
                 //continue;
-            }
-            
+            }  
+
             
             // Set field description
             $field.attr("data-name", field.name);
@@ -267,4 +271,67 @@ function attachUiEvents() {
         $this.addClass("selected");
         lastSelected = $this;
     });
+}
+
+function attachDefinitionFromDictionary()
+{
+    var $container = $("#parsedHl7")
+    var $segments = $(".segment", $container);    
+    for (var segmentIndex = 0; segmentIndex < $segments.size(); segmentIndex++) {
+        var $segment = $($segments[segmentIndex]);
+        var segment = findSegment($segment);
+        var $fields = $(".field", $segment);
+        for (var fieldIndex = 0; fieldIndex < $fields.size(); fieldIndex++) {
+            var $field = $($fields[fieldIndex]);
+            var field = segment.fields[fieldIndex - (segmentIndex === 0 ? 0 : 1)];
+            if (field == null || segmentIndex === 0) {
+                $field.attr("data-name", segment.desc);
+            } else {
+                $field.attr("data-name", field.desc);
+            }
+            var $repetitions = $(".repetition", $field);
+            var $repetition = $($repetitions[0]); // first repetition
+            var $components = $(".component", $repetition);
+            for (var componentIndex = 0; componentIndex < $components.size(); componentIndex++) {
+                var $component = $($components[componentIndex]);
+                if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
+                    $component.attr("title", segment.desc);
+                } else {
+                    var f = findFieldByDataType(field.datatype);
+                    if (f == null) {
+                        $component.attr("title", field.desc + " " + field.datatype);
+                    } else {
+                        var subfield = f.subfields[componentIndex - 1];
+                        if (subfield == null) {
+                            $component.attr("title", field.desc + "." + f.desc);
+                        } else {
+                            $component.attr("title", field.desc + "." + f.desc + "." + subfield.desc);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+function findSegment(segment)
+{        
+    var segmentName = segment.attr("data-name");
+    var result = HL7Dictionary.definitions['2.5.1'].segments[segmentName.toUpperCase()];
+    if (result == null)
+    {
+        console.info("Unable to find segment " + segmentName);
+        return null;
+    }
+    return result;
+}
+
+function findFieldByDataType(datatype)
+{
+    var result = HL7Dictionary.definitions['2.5.1'].fields[datatype];
+    if (result == null) {
+        console.warn("Unable to find field by datatype " + datatype);
+        return null;
+    }
+    return result;
 }

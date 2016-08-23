@@ -15,6 +15,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js" type="text/javascript"></script>
         <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="resources/modal/js/jquery.simplemodal.js" type="text/javascript"></script>
+        <script src="resources/js/require.js" type="text/javascript"></script>
         <script src="resources/js/data.types.js" type="text/javascript"></script>
         <script src="resources/js/parser.js" type="text/javascript"></script>
         <script src="resources/js/definition.handler.js" type="text/javascript"></script>
@@ -125,8 +126,10 @@
                 
                 showFieldNumbers();
                 
-                // Attach field definitions
-                attachDefinitionByVersion(version);
+                // Attach field definitions                
+                require(["resources/hl7-dictionary/dist/hl7dictionary"], function(d) {
+                    attachDefinitionByVersion(version, d);
+                });
             }
             
             var fieldNumbersVisible = false;
