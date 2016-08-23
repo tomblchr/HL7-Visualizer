@@ -1,0 +1,3 @@
+[submodule "resources/hl7-dictionary"]
+	path = resources/hl7-dictionary
+	url = https://github.com/fernandojsg/hl7-dictionary
