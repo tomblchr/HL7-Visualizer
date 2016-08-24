@@ -285,6 +285,7 @@ function attachDefinitionFromDictionary()
     for (var segmentIndex = 0; segmentIndex < $segments.size(); segmentIndex++) {
         var $segment = $($segments[segmentIndex]);
         var segment = findSegment($segment);
+        var segmentName = $segment.attr("data-name").toUpperCase();
         var $fields = $(".field", $segment);
         for (var fieldIndex = 0; fieldIndex < $fields.size(); fieldIndex++) {
             var $field = $($fields[fieldIndex]);
@@ -298,7 +299,7 @@ function attachDefinitionFromDictionary()
             var $repetition = $($repetitions[0]); // first repetition
             var $components = $(".component", $repetition);
             for (var componentIndex = 0; componentIndex < $components.size(); componentIndex++) {
-                var index = segment.desc + '-' + fieldIndex + '.' + (componentIndex + 1);
+                var index = segmentName + '-' + fieldIndex + '.' + (componentIndex + 1);
                 var $component = $($components[componentIndex]);
                 if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
                     $component.attr("title", segment.desc);
