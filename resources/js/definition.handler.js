@@ -289,7 +289,7 @@ function attachDefinitionFromDictionary()
         for (var fieldIndex = 0; fieldIndex < $fields.size(); fieldIndex++) {
             var $field = $($fields[fieldIndex]);
             var field = segment.fields[fieldIndex - (segmentIndex === 0 ? 0 : 1)];
-            if (field == null || segmentIndex === 0) {
+            if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
                 $field.attr("data-name", segment.desc);
             } else {
                 $field.attr("data-name", field.desc);
@@ -298,19 +298,20 @@ function attachDefinitionFromDictionary()
             var $repetition = $($repetitions[0]); // first repetition
             var $components = $(".component", $repetition);
             for (var componentIndex = 0; componentIndex < $components.size(); componentIndex++) {
+                var index = segment.desc + '-' + fieldIndex + '.' + (componentIndex + 1);
                 var $component = $($components[componentIndex]);
                 if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
                     $component.attr("title", segment.desc);
                 } else {
-                    var f = findFieldByDataType(field.datatype);
-                    if (f == null) {
-                        $component.attr("title", field.desc + " " + field.datatype);
+                    var datatype = findFieldByDataType(field.datatype);
+                    if (datatype == null) {
+                        $component.attr("title", field.desc + " - " + field.datatype);
                     } else {
-                        var subfield = f.subfields[componentIndex - 1];
+                        var subfield = datatype.subfields[componentIndex];
                         if (subfield == null) {
-                            $component.attr("title", field.desc + "." + f.desc);
+                            $component.attr("title", index + "<br />" + field.desc + "<br /> (" + datatype.desc + ")");
                         } else {
-                            $component.attr("title", field.desc + "." + f.desc + "." + subfield.desc);
+                            $component.attr("title", index + "<br />" + field.desc + " &gt; " + subfield.desc + "<br /> (" + datatype.desc + ") ");
                         }
                     }
                 }

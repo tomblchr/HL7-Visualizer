@@ -30,13 +30,13 @@ body {
 #parsedHl7 .segment { 
     margin-bottom: 2px; 
     clear:both;
-    margin-left: 30px;
+    margin-left: 3em;
 }
 
 #parsedHl7 .segment .field:first-child {
     font-weight: bold;
     position: absolute;
-    left:15px;
+    left:20px;
     background: #fff;
 }
 
@@ -178,6 +178,10 @@ body {
     float: left;
 }
 
+#simplemodal-data .field:first-child .repetition {
+    width: 20%;
+}
+
 #simplemodal-data .field:first-child .name {
-    display: none;
+    width: 80%;
 }
