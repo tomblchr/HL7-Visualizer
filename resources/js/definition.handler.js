@@ -301,6 +301,7 @@ function attachDefinitionFromDictionary()
             for (var componentIndex = 0; componentIndex < $components.size(); componentIndex++) {
                 var index = segmentName + '-' + fieldIndex + '.' + (componentIndex + 1);
                 var $component = $($components[componentIndex]);
+                $component.attr("data-index", index);
                 if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
                     $component.attr("title", segment.desc);
                 } else {
@@ -310,9 +311,21 @@ function attachDefinitionFromDictionary()
                     } else {
                         var subfield = datatype.subfields[componentIndex];
                         if (subfield == null) {
-                            $component.attr("title", index + "<br />" + field.desc + "<br /> (" + datatype.desc + ")");
+                            $component.attr("title", index + "<br />" + field.desc + "<br />" + datatype.desc);
                         } else {
-                            $component.attr("title", index + "<br />" + field.desc + " &gt; " + subfield.desc + "<br /> (" + datatype.desc + ") ");
+                            subfieldDataType = findFieldByDataType(subfield.datatype);
+                            if (subfieldDataType == null || subfieldDataType.subfields.length == 0) {
+                                $component.attr("title", index + "<br />" + field.desc + "<br />" + subfield.desc + "<br />" + datatype.desc);
+                            } 
+                            if (subfield.table) {
+                                var table = fundTableByIndex(subfield.table);
+                                if (table != null) {
+                                    var componentValue = $component.text().trim();
+                                    var componentDescription = table.values[componentValue];
+                                    console.info("Found table " + table.desc + " for sub-field value " + componentValue + " - " + componentDescription);
+                                    $component.attr("data-content", table.desc + " - " + componentDescription);
+                                } 
+                            }
                         }
                     }
                 }
@@ -338,6 +351,15 @@ function findFieldByDataType(datatype)
     var result = HL7Dictionary.definitions[HL7version].fields[datatype];
     if (result == null) {
         console.warn("Unable to find field by datatype " + datatype);
+        return null;
+    }
+    return result;
+}
+
+function fundTableByIndex(index) {
+    var result = HL7Dictionary.tables[index];
+    if (result == null) {
+        console.warn("Unable to find table " + index);
         return null;
     }
     return result;
