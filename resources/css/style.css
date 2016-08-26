@@ -163,13 +163,17 @@ body {
 #simplemodal-data .field .repetition {
     display: block;
     width:54%;
+    margin-left: 0%;
     float: left;
     color:#fff;
+    word-wrap: break-word;
 }
 
 #simplemodal-data .field > .separator {
     float:left;
     display: block;
+    width: 10%;
+    clear: left;
 }
 
 #simplemodal-data .field .name {
