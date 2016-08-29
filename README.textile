@@ -1,3 +1,3 @@
 h1. HL7 Visualizer
 
-Coming soon.
+This repository merges "uniqueculture's HL7-Visualizer":https://github.com/uniqueculture/HL7-Visualizer with "fernadojsg's HL7-Dictionary":https://github.com/fernandojsg/hl7-dictionary.
