@@ -299,7 +299,10 @@ function attachDefinitionFromDictionary()
             var $repetition = $($repetitions[0]); // first repetition
             var $components = $(".component", $repetition);
             for (var componentIndex = 0; componentIndex < $components.size(); componentIndex++) {
-                var index = segmentName + '-' + fieldIndex + '.' + (componentIndex + 1);
+                var index = segmentName + '-' + (fieldIndex + (segmentName == "MSH" ? 1 : 0));
+                if ($components.size() > 1){
+                    index += '.' + (componentIndex + 1);
+                }
                 var $component = $($components[componentIndex]);
                 $component.attr("data-index", index);
                 if (field == null || (segmentIndex === 0 && fieldIndex === 0 )) {
@@ -316,10 +319,13 @@ function attachDefinitionFromDictionary()
                             subfieldDataType = findFieldByDataType(subfield.datatype);
                             if (subfieldDataType == null || subfieldDataType.subfields.length == 0) {
                                 $component.attr("title", index + "<br />" + field.desc + "<br />" + subfield.desc + "<br />" + datatype.desc);
+                            } else {
+                                $component.attr("title", index + "<br />" + field.desc + "<br />" + subfield.desc + "<br />" + subfieldDataType.desc);
                             } 
                             if (subfield.table) {
-                                var table = fundTableByIndex(subfield.table);
-                                if (table != null) {
+                                var table = findTableByIndex(subfield.table);
+                                if (table == null) {
+                                } else {
                                     var componentValue = $component.text().trim();
                                     var componentDescription = table.values[componentValue];
                                     console.info("Found table " + table.desc + " for sub-field value " + componentValue + " - " + componentDescription);
@@ -356,7 +362,7 @@ function findFieldByDataType(datatype)
     return result;
 }
 
-function fundTableByIndex(index) {
+function findTableByIndex(index) {
     var result = HL7Dictionary.tables[index];
     if (result == null) {
         console.warn("Unable to find table " + index);
